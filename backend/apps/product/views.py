@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from django.views.generic import TemplateView, ListView
+from django.views.generic import TemplateView, ListView, DetailView
 import json
 # Create your views here.
 from .models import SubCategory, Category, Product
@@ -22,3 +22,9 @@ class ProductListView(ListView):
     template_name = 'product_list.html'
     context_object_name = 'products'
     queryset = Product.objects.filter(is_active=True)
+
+
+class ProductDetailView(DetailView):
+    model = Product
+    template_name = 'product_detail.html'
+    context_object_name = 'product'
