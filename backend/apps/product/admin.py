@@ -33,3 +33,10 @@ class ProductAdmin(admin.ModelAdmin):
         'updated',
         'is_active',
     ]
+
+
+@admin.register(BannerImage)
+class BannerImageAdmin(admin.ModelAdmin):
+    list_display = ('name', 'add_link', 'image', 'created', 'updated')
+    list_filter = ('created',)
+

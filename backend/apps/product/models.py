@@ -14,6 +14,7 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+
 class SubCategory(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='subcategories')
     name = models.CharField('Название', max_length=70, unique=True)
@@ -26,6 +27,7 @@ class SubCategory(models.Model):
 
     def __str__(self):
         return self.name
+
 
 class Product(models.Model):
     name = models.CharField('Название', max_length=255)
@@ -46,6 +48,7 @@ class Product(models.Model):
     def __str__(self):
         return self.name
 
+
 class Review(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='reviews')
     user_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reviews')
@@ -60,3 +63,19 @@ class Review(models.Model):
 
     def __str__(self):
         return f'{self.id}'
+
+
+class BannerImage(models.Model):
+    image = models.ImageField(upload_to='banners/')
+    add_link = models.URLField()
+    name = models.CharField('Название', max_length=50)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = 'Картинка для банера'
+        verbose_name_plural = 'Картинки для банера'
+        ordering = ['-created']
+
+    def __str__(self):
+        return self.name

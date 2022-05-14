@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.views.generic import TemplateView, ListView, DetailView
 import json
 # Create your views here.
-from .models import SubCategory, Category, Product
+from .models import SubCategory, Category, Product, BannerImage
 
 
 def get_subcategories(request):
@@ -15,6 +15,16 @@ def get_subcategories(request):
 
 class IndexPage(TemplateView):
     template_name = "index.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        banners = BannerImage.objects.all()
+        if len(banners) > 6:
+            banners = banners[:5]
+        context['banners'] = banners
+        print(context)
+        return context
+
 
 
 class ProductListView(ListView):
