@@ -22,11 +22,13 @@ class AddCartView(View):
         )
         return redirect("cart_detail")
 
-
+from backend.apps.order.forms import OrderForm
 class CartDetailView(View):
 
     def get(self, request):
-        return render(self.request, "cart.html")
+        form = OrderForm
+        context = {'form':form}
+        return render(self.request, "cart.html", context)
 
 
 class RemoveCartView(View):
