@@ -1,5 +1,5 @@
 {% extends "base_tabler.html" %}
-
+{% load static %}
 
 {% block content %}
     <div class="col-12">
@@ -39,10 +39,12 @@
                         <tr>
                           <td><span class="text-muted">{{item.product.id}}</span></td>
                           <td><a href=""><img src="{{item.product.image.url}}" alt="" width="100"></a></td>
-                          <td><a href="{% url 'product_detail' item.product.id %}" class="text-reset" tabindex="-1">{{item.product.name}}</a></td>
+                          <td><a href="{% url 'product_detail' item.product.id %}" class="text-reset" tabindex="-1">{{item.product.name|truncatechars:70}}</a></td>
                           <td>{{item.price}}</td>
                           <td>
-                            {{item.quantity}}
+                              <button type="button" class="button-minus" data-id="{{item.product.id}}"><i class="ti ti-minus"></i></button>
+                              {{item.quantity}}
+                              <button type="button" class="button-plus" data-id="{{item.product.id}}"><i class="ti ti-plus"></i></button>
                           </td>
                           <td>{{item.total_price|floatformat:0}} сом</td>
                           <td><a href="{% url 'remove_cart' item.product.id %}">
@@ -76,4 +78,11 @@
                   </div>
                 </div>
               </div>
+{% endblock %}
+
+
+{% block javascript %}
+<script src="{% static 'dist/js/cart.js' %}">
+  
+</script>
 {% endblock %}

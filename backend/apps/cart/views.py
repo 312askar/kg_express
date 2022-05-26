@@ -58,3 +58,15 @@ def add_cart_product(request, pk):
         cart.add(product)
         return JsonResponse({'message': 'Ok'}, status=200)
     return JsonResponse({'message': 'Bad Request'}, status=400)
+
+
+def minus_cart(request, pk):
+    if request.method == 'POST':
+        try:
+            product = Product.objects.get(id=pk)
+        except Product.DoesNotExist:
+            raise Http404
+        cart = Cart(request)
+        cart.minus(product)
+        return JsonResponse({'message': 'Ok'}, status=200)
+    return JsonResponse({'message': 'Bad Request'}, status=400)

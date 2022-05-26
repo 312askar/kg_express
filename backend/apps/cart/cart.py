@@ -58,3 +58,10 @@ class Cart():
     def save(self):
         self.session.modified = True
 
+    def minus(self, product):
+        product_id = str(product.id)
+        if product_id in self.cart:
+            self.cart[product_id]['quantity'] -= 1
+            if self.cart[product_id]['quantity'] <= 0:
+                del self.cart[product_id]
+        self.save()
