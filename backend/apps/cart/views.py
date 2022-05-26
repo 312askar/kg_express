@@ -8,10 +8,12 @@ from .forms import CartAddForm
 from .cart import Cart
 from backend.apps.product.models import Product
 
+from django.http import JsonResponse
+
 
 class AddCartView(View):
 
-    def get(self, request, pk ):
+    def get(self, request, pk):
         product_id = self.kwargs.get('pk')
         cart = Cart(request)
         product = Product.objects.get(id=pk)
@@ -43,3 +45,16 @@ class ClearCartView(View):
         cart = Cart(request)
         cart.clear()
         return redirect('cart_detail')
+
+
+
+def add_cart_product(request, pk):
+    if request.method == 'POST':
+        try:
+            product = Product.objects.get(id=pk)
+        except Product.DoesNotExist:
+            raise Http404
+        cart = Cart(request)
+        cart.add(product)
+        return JsonResponse({'message': 'Ok'}, status=200)
+    return JsonResponse({'message': 'Bad Request'}, status=400)

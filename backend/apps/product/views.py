@@ -31,7 +31,7 @@ class ProductListView(ListView):
     model = Product
     template_name = 'product_list.html'
 
-    paginate_by = 1
+    paginate_by = 6
 
     def get_queryset(self):
         print(self.kwargs)
