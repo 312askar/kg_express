@@ -2,6 +2,13 @@
 
     {% block content %}
         <div class="row row-cards">
+            {% if search %}
+                <h2>Результаты поиска по запросу: {{search_query}}</h2>
+            {%endif%}
+            <form method="get">
+                {{filter.form}}
+                <button type="submit" class="btn btn-primary">Фильтровать</button>
+            </form>
             {% for product in page_obj %}
                 <div class="col-sm-6 col-lg-4">
                     <div class="card card-sm">

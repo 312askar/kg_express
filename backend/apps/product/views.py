@@ -4,6 +4,9 @@ from django.views.generic import TemplateView, ListView, DetailView
 import json
 # Create your views here.
 from .models import SubCategory, Category, Product, BannerImage
+from django.db.models import Q
+from django_filters.views import FilterView
+from .filters import ProductFilter
 
 
 def get_subcategories(request):
@@ -26,12 +29,11 @@ class IndexPage(TemplateView):
         return context
 
 
-
-class ProductListView(ListView):
+class ProductListView(FilterView):
     model = Product
     template_name = 'product_list.html'
-
     paginate_by = 6
+    filterset_class = ProductFilter
 
     def get_queryset(self):
         print(self.kwargs)
@@ -45,7 +47,27 @@ class ProductListView(ListView):
             products = Product.objects.filter(is_active=True)
         return products
 
+
 class ProductDetailView(DetailView):
     model = Product
     template_name = 'product_detail.html'
     context_object_name = 'product'
+
+
+class ProductSearchView(ListView):
+    model = Product
+    template_name = 'product_list.html'
+    paginate_by = 10
+
+    def get_queryset(self):
+        search_text = self.request.GET.get('query')
+        if search_text is None:
+            return self.model.objects.filter(is_active=True)
+        q = self.model.objects.filter(Q(name__icontains=search_text) | Q(description__icontains=search_text))
+        return q
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['search'] = True
+        context['search_query'] = self.request.GET.get('query')
+        return  context
