@@ -49,3 +49,18 @@ class CategoryDetailSerializer(serializers.ModelSerializer):
             'slug',
             'subcategories'
         ]
+
+
+class ProductCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Product
+        fields = [
+            'name',
+            'description',
+            'price',
+            'image',
+            'category',
+            'subcategory',
+        ]
+
+
